@@ -1,25 +1,23 @@
-import logo from './logo.svg';
+import {BrowserRouter, Route, Switch} from 'react-router-dom'
+import HomePage from './components/HomePage'
+import Chat from './components/Сhat'
 import './App.css';
+import openSocket from 'socket.io-client';
+import React from "react";
+import CONSTANTS from "./utils/constants";
+
+const socket = openSocket(CONSTANTS.API);
 
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+    return (
+        <BrowserRouter>
+            <Switch>
+                <Route path={"/"} component={(props) => <HomePage {...props} socket={socket}/>} exact/>
+                <Route path={"/chat/:chatName"} component={(props) => <Chat {...props} socket={socket}/>} exact/>
+            </Switch>
+        </BrowserRouter>
+
+    );
 }
 
 export default App;
